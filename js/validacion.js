@@ -1,76 +1,58 @@
+const users = [];
+const products = [];
 
+// Función para agregar un usuario
+document.getElementById('userForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const userName = document.getElementById('userName').value;
+    const userEmail = document.getElementById('userEmail').value;
+    const userAge = document.getElementById('userAge').value;
 
+    const user = { name: userName, email: userEmail, age: +userAge }; // Desestructuración
+    users.push(user); // Usar operador spread aquí si fuera necesario en otra operación
+    updateUserList();
+    this.reset();
+});
 
-// Example starter JavaScript for disabling form submissions if there are invalid fields
-(() => {
-    'use strict';
+// Función para mostrar la lista de usuarios
+function updateUserList() {
+    const userList = document.getElementById('userList');
+    userList.innerHTML = '';
+    users.forEach(user => {
+        userList.innerHTML += <li>${user.name} - ${user.email} - ${user.age}</li>;
+    });
+}
 
-    const form = document.querySelector('.needs-validation');
+// Función para agregar un producto
+document.getElementById('productForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const productName = document.getElementById('productName').value;
+    const productPrice = document.getElementById('productPrice').value;
+    const productCategory = document.getElementById('productCategory').value;
 
-    // Función para validar las contraseñas
-    const validatePasswords = () => {
-        const password1 = document.getElementById('password1');
-        const password2 = document.getElementById('password2');
-    
+    const product = { name: productName, price: +productPrice, category: productCategory }; // Desestructuración
+    products.push(product); // Usar operador spread aquí si fuera necesario en otra operación
+    updateProductList();
+    this.reset();
+});
 
-        if (password1.value !== password2.value|| password1.value.length < 6) {
-            password2.setCustomValidity('Las contraseñas deben coincidir');
-        } else {
-            password2.setCustomValidity('');
-        } 
-     
-    }
+// Función para mostrar la lista de productos
+function updateProductList() {
+    const productList = document.getElementById('productList');
+    productList.innerHTML = '';
+    products.forEach(product => {
+        productList.innerHTML += <li>${product.name} - $${product.price} - ${product.category}</li>;
+    });
+}
 
-
-    function validateNombres(inputID) {
-        const input = document.getElementById(inputID);
-        if (!(input.checkValidity())
-        ) {
-          input.setCustomValidity("Debe ingresar su"+inputID);
-        } else {
-            input.setCustomValidity("");
+// Función para generar el reporte
+document.getElementById('generateReport').addEventListener('click', function() {
+    const report = [...users, ...products]; // Usando operador spread
+    const reportOutput = report.map(item => {
+        if (item.price) {
+            return Producto: ${item.name}, Precio: $${item.price}, Categoría: ${item.category};
         }
-      
-        input.reportValidity(); 
-       
-      }
-
-      function validateEmail() {
-        const input = document.getElementById("email");
-        if (!(input.checkValidity())
-        ) {
-          input.setCustomValidity("Debe ingresar su email");
-        } else {
-            input.setCustomValidity("");
-        }
-      
-        input.reportValidity();
-        
-      }
-
-   
-    document.getElementById('nombre').addEventListener('input', () => validateNombres("nombre")); 
-    document.getElementById('apellido').addEventListener('input', () => validateNombres("apellido"));
-    document.getElementById('email').addEventListener('input', validateEmail);
-    document.getElementById('password1').addEventListener('input', validatePasswords);
-    document.getElementById('password2').addEventListener('input', validatePasswords);
-     
-  
-  form.addEventListener('submit', event => {
-    validateNombres("nombre"); 
-    validateNombres("apellido"); 
-    validateEmail(); 
-    validatePasswords(); 
-    
-    if (!form.checkValidity()) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        document.querySelectorAll('input').forEach(input => {
-            input.reportValidity(); // Mostrar el mensaje de error
-        });
-    }
- 
-    form.classList.add('was-validated');
-}, false);
-})();
+        return Usuario: ${item.name}, Email: ${item.email}, Edad: ${item.age};
+    }).join('\n');
+    document.getElementById('report').textContent = reportOutput;
+});
