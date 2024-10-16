@@ -8,8 +8,8 @@ document.getElementById('userForm').addEventListener('submit', function(event) {
     const userEmail = document.getElementById('userEmail').value;
     const userAge = document.getElementById('userAge').value;
 
-    const user = { name: userName, email: userEmail, age: +userAge }; // Desestructuración
-    users.push(user); // Usar operador spread aquí si fuera necesario en otra operación
+    const user = { name: userName, email: userEmail, age: +userAge };
+    users.push(user);
     updateUserList();
     this.reset();
 });
@@ -19,7 +19,7 @@ function updateUserList() {
     const userList = document.getElementById('userList');
     userList.innerHTML = '';
     users.forEach(user => {
-        userList.innerHTML += <li>${user.name} - ${user.email} - ${user.age}</li>;
+        userList.innerHTML += `<li class="list-group-item">${user.name} - ${user.email} - ${user.age}</li>`;
     });
 }
 
@@ -30,8 +30,8 @@ document.getElementById('productForm').addEventListener('submit', function(event
     const productPrice = document.getElementById('productPrice').value;
     const productCategory = document.getElementById('productCategory').value;
 
-    const product = { name: productName, price: +productPrice, category: productCategory }; // Desestructuración
-    products.push(product); // Usar operador spread aquí si fuera necesario en otra operación
+    const product = { name: productName, price: +productPrice, category: productCategory };
+    products.push(product);
     updateProductList();
     this.reset();
 });
@@ -41,18 +41,18 @@ function updateProductList() {
     const productList = document.getElementById('productList');
     productList.innerHTML = '';
     products.forEach(product => {
-        productList.innerHTML += <li>${product.name} - $${product.price} - ${product.category}</li>;
+        productList.innerHTML += `<li class="list-group-item">${product.name} - $${product.price} - ${product.category}</li>`;
     });
 }
 
 // Función para generar el reporte
 document.getElementById('generateReport').addEventListener('click', function() {
-    const report = [...users, ...products]; // Usando operador spread
+    const report = [...users, ...products];
     const reportOutput = report.map(item => {
-        if (item.price) {
-            return Producto: ${item.name}, Precio: $${item.price}, Categoría: ${item.category};
+        if (item.price !== undefined) {
+            return `Producto: ${item.name}, Precio: $${item.price}, Categoría: ${item.category}`;
         }
-        return Usuario: ${item.name}, Email: ${item.email}, Edad: ${item.age};
+        return `Usuario: ${item.name}, Email: ${item.email}, Edad: ${item.age}`;
     }).join('\n');
     document.getElementById('report').textContent = reportOutput;
 });
